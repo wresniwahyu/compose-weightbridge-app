@@ -1,6 +1,7 @@
 package android.template.core.ui.component
 
 import android.template.core.ui.IconColor
+import android.template.core.ui.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +36,7 @@ fun SearchBar(initialValue: String = "", modifier: Modifier = Modifier, callback
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            contentDescription = "Search",
+            contentDescription = stringResource(id = R.string.search),
             imageVector = Icons.Default.Search,
             modifier = Modifier.padding(start = 16.dp),
             tint = IconColor
@@ -49,10 +51,16 @@ fun SearchBar(initialValue: String = "", modifier: Modifier = Modifier, callback
                 .fillMaxWidth()
                 .background(Color.White, CircleShape),
             placeholder = {
-                Text(text = "Search")
+                Text(text = stringResource(id = R.string.search))
             },
             singleLine = true,
-            maxLines = 1
+            maxLines = 1,
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
         )
     }
 }

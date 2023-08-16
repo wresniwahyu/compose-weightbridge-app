@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="driver_name">Driver Name</string>
+    <string name="license_number">License Number</string>
+    <string name="weighing_date">Weighing Date</string>
+    <string name="inbound_weight">Inbound Weight</string>
+    <string name="outbound_weight">Outbound Weight</string>
+    <string name="net_weight">Net Weight</string>
+    <string name="create_new_ticket">Create New Ticket</string>
+</resources>
