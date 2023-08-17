@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":core-data"))
     implementation(project(":core-testing"))
     implementation(project(":feature-weighbridge"))
+    implementation(project(":core-database"))
 
     // Testing
     implementation(libs.androidx.test.core)

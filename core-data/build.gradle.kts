@@ -60,5 +60,6 @@ dependencies {
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)
+    testImplementation(libs.junit5)
     testImplementation(libs.kotlinx.coroutines.test)
 }
