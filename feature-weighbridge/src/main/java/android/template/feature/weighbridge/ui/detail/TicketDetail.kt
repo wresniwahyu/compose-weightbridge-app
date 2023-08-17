@@ -1,6 +1,8 @@
 package android.template.feature.weighbridge.ui.detail
 
+import android.template.core.data.model.WeighbridgeTicketUiModel
 import android.template.feature.weighbridge.R
+import android.template.feature.weighbridge.utils.toReadableInTons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TicketDetail(
+    ticket: WeighbridgeTicketUiModel,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -32,7 +35,7 @@ fun TicketDetail(
             style = MaterialTheme.typography.labelMedium
         )
         Text(
-            text = "Wresni Wahyu",
+            text = ticket.driverName,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold
         )
@@ -43,7 +46,7 @@ fun TicketDetail(
             style = MaterialTheme.typography.labelMedium
         )
         Text(
-            text = "LN-1234567890",
+            text = ticket.licenseNumber,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold
         )
@@ -54,7 +57,7 @@ fun TicketDetail(
             style = MaterialTheme.typography.labelMedium
         )
         Text(
-            text = "17-08-2023",
+            text = ticket.weighingDate,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold
         )
@@ -76,7 +79,7 @@ fun TicketDetail(
                     style = MaterialTheme.typography.labelMedium
                 )
                 Text(
-                    text = "10 Tons",
+                    text = ticket.inWeight.toReadableInTons(),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -90,7 +93,7 @@ fun TicketDetail(
                     style = MaterialTheme.typography.labelMedium
                 )
                 Text(
-                    text = "20 Tons",
+                    text = ticket.outWeight.toReadableInTons(),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -103,7 +106,7 @@ fun TicketDetail(
             style = MaterialTheme.typography.labelMedium
         )
         Text(
-            text = "20 Tons",
+            text = ticket.getNetWeight(),
             style = MaterialTheme.typography.displaySmall,
         )
     }
@@ -112,5 +115,5 @@ fun TicketDetail(
 @Preview(showBackground = false)
 @Composable
 fun TicketDetailPreview() {
-    TicketDetail()
+    TicketDetail(WeighbridgeTicketUiModel())
 }

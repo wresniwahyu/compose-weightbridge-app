@@ -1,6 +1,8 @@
 package android.template.feature.weighbridge.ui.list
 
+import android.template.core.data.model.WeighbridgeTicketUiModel
 import android.template.core.ui.IconColor
+import android.template.feature.weighbridge.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,16 +19,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun TicketItem(
+    weighbridgeTicketUiModel: WeighbridgeTicketUiModel,
     modifier: Modifier = Modifier,
-    onItemClick: () -> Unit = {}
+    onItemClick: () -> Unit = {},
+    onMenuItemClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
@@ -42,7 +46,7 @@ fun TicketItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Driver Name",
+                    text = weighbridgeTicketUiModel.driverName,
                     style = TextStyle(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 25.sp
@@ -50,31 +54,35 @@ fun TicketItem(
                     modifier = modifier.weight(1f)
                 )
                 Icon(
-                    contentDescription = "Search",
+                    contentDescription = stringResource(R.string.more_menu),
                     imageVector = Icons.Default.MoreVert,
-                    modifier = Modifier.padding(5.dp),
-                    tint = IconColor
+                    tint = IconColor,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .clickable {
+                            onMenuItemClick.invoke()
+                        },
                 )
             }
             Row {
                 Column(modifier = modifier.weight(1f)) {
                     Text(
-                        text = "LN-1234567890",
+                        text = weighbridgeTicketUiModel.licenseNumber,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Spacer(modifier = modifier.height(8.dp))
                     Text(
-                        text = "17-08-2023",
+                        text = weighbridgeTicketUiModel.weighingDate,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
                 Column(modifier = modifier.weight(1f)) {
                     Text(
-                        text = "Net Weight",
+                        text = stringResource(id = R.string.net_weight),
                         style = MaterialTheme.typography.labelSmall
                     )
                     Text(
-                        text = "10 Tons",
+                        text = weighbridgeTicketUiModel.getNetWeight(),
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
@@ -85,10 +93,4 @@ fun TicketItem(
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TicketItemPreview() {
-    TicketItem()
 }

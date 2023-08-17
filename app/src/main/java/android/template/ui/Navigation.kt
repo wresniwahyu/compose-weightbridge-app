@@ -23,15 +23,39 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { TicketsScreen() }
-        composable("input") { InputTicketScreen() }
-        composable("detail") { TicketDetailScreen() }
+        composable("main") { TicketsScreen(navController = navController) }
+
+        composable(
+            route = "input?id={id}",
+            arguments = listOf(navArgument("id") {
+                defaultValue = ""
+            })
+        ) {
+            val id = it.arguments?.getString("id").orEmpty()
+            InputTicketScreen(id, navController)
+        }
+
+        composable(
+            route = "detail?id={id}",
+            arguments = listOf(navArgument("id") {
+                defaultValue = ""
+            })
+        ) {
+            val id = it.arguments?.getString("id").orEmpty()
+            if (id.isBlank()) {
+                navController.navigateUp()
+                return@composable
+            }
+
+            TicketDetailScreen(id, navController)
+        }
 
     }
 }

@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ErrorState(
     modifier: Modifier = Modifier,
-    errorMessage: String = "",
-    buttonText: String = "",
+    errorMessage: String = "Something went wrong!",
+    buttonText: String = "Try Again",
     onClick: () -> Unit
 ) {
     Column(
