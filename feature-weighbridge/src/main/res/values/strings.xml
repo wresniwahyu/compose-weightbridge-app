@@ -12,4 +12,7 @@
     <string name="save">Save</string>
     <string name="more_menu">More Menu</string>
     <string name="change_date">Change Date</string>
+    <string name="message_fill_incomplete_data">fill incomplete data</string>
+    <string name="message_load_data_failed">load data failed!</string>
+    <string name="message_ticket_deleted">ticket deleted</string>
 </resources>

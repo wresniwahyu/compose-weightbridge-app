@@ -49,11 +49,11 @@ fun TicketsScreen(
         viewModel.event.collect { event ->
             when (event) {
                 is TicketsViewModel.Event.DeleteTicketItem -> {
-                    context.showToast("ticket deleted")
+                    context.showToast(context.getString(R.string.message_ticket_deleted))
                 }
 
                 is TicketsViewModel.Event.ShowError -> {
-                    context.showToast("load data failed!")
+                    context.showToast(context.getString(R.string.message_load_data_failed))
                 }
             }
         }

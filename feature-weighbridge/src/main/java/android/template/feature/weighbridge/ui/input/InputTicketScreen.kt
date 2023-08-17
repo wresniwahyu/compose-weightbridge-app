@@ -6,6 +6,7 @@ import android.template.core.ui.component.FullButton
 import android.template.core.ui.component.Toolbar
 import android.template.feature.weighbridge.R
 import android.template.feature.weighbridge.utils.popUpToMain
+import android.template.feature.weighbridge.utils.showToast
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -102,21 +103,44 @@ fun InputTicketScreen(
                     onInWeightChange = { inWeight = it },
                     outWeight = outWeight,
                     onOutWeightChange = { outWeight = it },
-
                     )
             }
             FullButton(text = stringResource(R.string.save)) {
-                viewModel.insertTicket(
-                    WeighbridgeTicketUiModel(
-                        id = UUID.randomUUID().toString(),
-                        weighingDate = date.trim(),
-                        driverName = driver.trim(),
-                        licenseNumber = license.trim(),
-                        inWeight = inWeight.toDoubleOrNull() ?: 0.0,
-                        outWeight = outWeight.toDoubleOrNull() ?: 0.0
-                    )
+                val ticket = WeighbridgeTicketUiModel(
+                    id = UUID.randomUUID().toString(),
+                    weighingDate = date.trim(),
+                    driverName = driver.trim(),
+                    licenseNumber = license.trim(),
+                    inWeight = inWeight.toDoubleOrNull() ?: 0.0,
+                    outWeight = outWeight.toDoubleOrNull() ?: 0.0
                 )
+
+                if (ticket.validate()) {
+                    viewModel.insertTicket(ticket)
+                } else {
+                    context.showToast(context.getString(R.string.message_fill_incomplete_data))
+                }
             }
         }
     }
+
+}
+
+fun WeighbridgeTicketUiModel.validate(): Boolean {
+    if (weighingDate.isBlank()) {
+        return false
+    }
+    if (driverName.isBlank()) {
+        return false
+    }
+    if (driverName.isBlank()) {
+        return false
+    }
+    if (licenseNumber.isBlank()) {
+        return false
+    }
+    if (inWeight == 0.0) {
+        return false
+    }
+    return true
 }

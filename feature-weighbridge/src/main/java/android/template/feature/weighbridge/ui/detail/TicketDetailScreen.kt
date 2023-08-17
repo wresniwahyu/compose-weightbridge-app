@@ -35,7 +35,7 @@ fun TicketDetailScreen(
         viewModel.event.collect { event ->
             when (event) {
                 is TicketDetailViewModel.Event.ShowError -> {
-                    context.showToast("load data failed")
+                    context.showToast(context.getString(R.string.message_load_data_failed))
                 }
             }
         }
