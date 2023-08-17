@@ -16,10 +16,13 @@
 
 package android.template.core.database
 
+import android.template.core.database.dao.WeighbridgeTicketDao
+import android.template.core.database.model.WeighbridgeTicketModel
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
-@Database(entities = [MyModel::class], version = 1)
+@Database(entities = [MyModel::class, WeighbridgeTicketModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun myModelDao(): MyModelDao
+    abstract fun weighbridgeTicketDao(): WeighbridgeTicketDao
 }

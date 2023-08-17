@@ -16,14 +16,17 @@
 
 package android.template.core.data.di
 
+import android.template.core.data.DefaultMyModelRepository
+import android.template.core.data.MyModelRepository
+import android.template.core.data.repository.WeighbridgeTicketRepository
+import android.template.core.data.repository.WeighbridgeTicketRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import android.template.core.data.MyModelRepository
-import android.template.core.data.DefaultMyModelRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,6 +39,18 @@ interface DataModule {
     fun bindsMyModelRepository(
         myModelRepository: DefaultMyModelRepository
     ): MyModelRepository
+
+}
+
+@Module
+@InstallIn(ViewModelComponent::class)
+abstract class RepositoryModule {
+
+    @Binds
+    abstract fun bindsWeighbridgeTicketRepository(
+        impl: WeighbridgeTicketRepositoryImpl
+    ): WeighbridgeTicketRepository
+
 }
 
 class FakeMyModelRepository @Inject constructor() : MyModelRepository {
