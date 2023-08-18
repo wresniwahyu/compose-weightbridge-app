@@ -10,5 +10,9 @@ interface WeighbridgeTicketRepository {
     suspend fun deleteTicket(id: String)
     fun getTickets(): Flow<List<WeighbridgeTicketUiModel>>
     fun getTicketById(id: String): Flow<WeighbridgeTicketUiModel>
+    fun getTicketsByKeyword(keyword: String): Flow<List<WeighbridgeTicketUiModel>>
+    fun getTicketSortByDate(): Flow<List<WeighbridgeTicketUiModel>>
+    fun getTicketSortByDriver(): Flow<List<WeighbridgeTicketUiModel>>
+    fun getTicketSortByLicense(): Flow<List<WeighbridgeTicketUiModel>>
 
 }

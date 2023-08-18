@@ -1,27 +1,31 @@
 package android.template.feature.weighbridge.ui.list
 
 import android.template.core.data.model.WeighbridgeTicketUiModel
+import android.template.core.ui.IconColor
+import android.template.core.ui.component.BottomSheetMenu
+import android.template.core.ui.component.BottomSheetSort
 import android.template.core.ui.component.EmptyState
 import android.template.core.ui.component.FullButton
 import android.template.core.ui.component.SearchBar
 import android.template.feature.weighbridge.R
+import android.template.feature.weighbridge.ui.list.TicketsViewModel.Companion.SORT_BY_DATE
+import android.template.feature.weighbridge.ui.list.TicketsViewModel.Companion.SORT_BY_DRIVER
+import android.template.feature.weighbridge.ui.list.TicketsViewModel.Companion.SORT_BY_LICENSE
 import android.template.feature.weighbridge.utils.showToast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +34,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -74,27 +79,69 @@ fun TicketsContent(
     data: List<WeighbridgeTicketUiModel>,
     modifier: Modifier = Modifier
 ) {
-    var showSheet by remember { mutableStateOf(false) }
+    var showMenuBs by remember { mutableStateOf(false) }
+    var showSortBs by remember { mutableStateOf(false) }
     var lastItemIdClick by remember { mutableStateOf("") }
 
-    if (showSheet) {
-        BottomSheet(
+    if (showMenuBs) {
+        BottomSheetMenu(
             onEditClicked = {
                 navController.navigate("input?id=${lastItemIdClick}")
-                showSheet = false
+                showMenuBs = false
             },
             onDeleteClicked = {
                 viewModel.deleteTicket(lastItemIdClick)
-                showSheet = false
+                showMenuBs = false
+            },
+            onDismiss = {
+                showMenuBs = false
             }
-        ) {
-            showSheet = false
-        }
+        )
+    }
+
+    if (showSortBs) {
+        BottomSheetSort(
+            onSortByDate = {
+                viewModel.getTicketsWithSort(SORT_BY_DATE)
+                showSortBs = false
+            },
+            onSortByDriver = {
+                viewModel.getTicketsWithSort(SORT_BY_DRIVER)
+                showSortBs = false
+            },
+            onSortByLicense = {
+                viewModel.getTicketsWithSort(SORT_BY_LICENSE)
+                showSortBs = false
+            },
+            onDismiss = {
+                showSortBs = false
+            }
+        )
     }
 
     Box(modifier = modifier.fillMaxSize()) {
         Column {
-            SearchBar(callback = {})
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SearchBar(
+                    modifier = modifier.weight(1f),
+                    callback = {
+                        viewModel.getTicketsByKeyword(it)
+                    })
+                Icon(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .clickable {
+                            showSortBs = true
+                        },
+                    contentDescription = stringResource(R.string.sort),
+                    imageVector = Icons.Default.MoreVert,
+                    tint = IconColor
+                )
+                Spacer(modifier = modifier.width(16.dp))
+            }
 
             if (data.isNotEmpty()) {
                 LazyColumn(modifier = modifier.weight(1f)) {
@@ -107,7 +154,7 @@ fun TicketsContent(
                                 },
                                 onMenuItemClick = {
                                     lastItemIdClick = ticket.id
-                                    showSheet = true
+                                    showMenuBs = true
                                 }
                             )
                         }
@@ -123,45 +170,4 @@ fun TicketsContent(
         }
     }
 
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BottomSheet(
-    modifier: Modifier = Modifier,
-    onEditClicked: () -> Unit = {},
-    onDeleteClicked: () -> Unit = {},
-    onDismiss: () -> Unit,
-) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-
-    ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
-        sheetState = modalBottomSheetState,
-        dragHandle = { BottomSheetDefaults.DragHandle() },
-    ) {
-        Spacer(modifier = modifier.height(16.dp))
-        Text(
-            text = "Edit",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clickable {
-                    onEditClicked.invoke()
-                }
-        )
-        Spacer(modifier = modifier.height(4.dp))
-        Text(
-            text = "Delete",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clickable {
-                    onDeleteClicked.invoke()
-                }
-        )
-        Spacer(modifier = modifier.height(16.dp))
-    }
 }

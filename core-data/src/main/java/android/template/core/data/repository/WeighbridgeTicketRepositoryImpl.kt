@@ -60,4 +60,28 @@ class WeighbridgeTicketRepositoryImpl @Inject constructor(
             }
             .flowOn(dispatcherIO)
     }
+
+    override fun getTicketsByKeyword(keyword: String): Flow<List<WeighbridgeTicketUiModel>> {
+        return dao.getTicketsByKeyword("%$keyword%")
+            .map { it.toUiModels() }
+            .flowOn(dispatcherIO)
+    }
+
+    override fun getTicketSortByDate(): Flow<List<WeighbridgeTicketUiModel>> {
+        return dao.getTicketsByDateAsc()
+            .map { it.toUiModels() }
+            .flowOn(dispatcherIO)
+    }
+
+    override fun getTicketSortByDriver(): Flow<List<WeighbridgeTicketUiModel>> {
+        return dao.getTicketsByDriverAsc()
+            .map { it.toUiModels() }
+            .flowOn(dispatcherIO)
+    }
+
+    override fun getTicketSortByLicense(): Flow<List<WeighbridgeTicketUiModel>> {
+        return dao.getTicketsByLicenseAsc()
+            .map { it.toUiModels() }
+            .flowOn(dispatcherIO)
+    }
 }

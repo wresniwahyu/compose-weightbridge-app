@@ -25,6 +25,9 @@ class TicketsViewModel @Inject constructor(
 
     companion object {
         const val TAG = "TicketsViewModel"
+        const val SORT_BY_DATE = "SORT_BY_DATE"
+        const val SORT_BY_DRIVER = "SORT_BY_DRIVER"
+        const val SORT_BY_LICENSE = "SORT_BY_LICENSE"
     }
 
     private val _event = MutableSharedFlow<Event>()
@@ -39,6 +42,74 @@ class TicketsViewModel @Inject constructor(
             repository.getTickets()
                 .catch {
                     Log.e(TAG, "getTickets failed", it)
+                    _event.emit(Event.ShowError(it))
+                }
+                .collectLatest {
+                    _state.update { state ->
+                        state.copy(tickets = it)
+                    }
+                }
+        }
+    }
+
+    fun getTicketsByKeyword(keyword: String) {
+        viewModelScope.launch {
+            repository.getTicketsByKeyword(keyword)
+                .catch {
+                    Log.e(TAG, "getTicketsByKeyword failed", it)
+                    _event.emit(Event.ShowError(it))
+                }
+                .collectLatest {
+                    _state.update { state ->
+                        state.copy(tickets = it)
+                    }
+                }
+        }
+    }
+
+    fun getTicketsWithSort(sortType: String) {
+        when (sortType) {
+            SORT_BY_DATE -> getTicketSortByDate()
+            SORT_BY_DRIVER -> getTicketSortByDriver()
+            SORT_BY_LICENSE -> getTicketSortByLicense()
+        }
+    }
+
+    private fun getTicketSortByDate() {
+        viewModelScope.launch {
+            repository.getTicketSortByDate()
+                .catch {
+                    Log.e(TAG, "getTicketSortByDate failed", it)
+                    _event.emit(Event.ShowError(it))
+                }
+                .collectLatest {
+                    _state.update { state ->
+                        state.copy(tickets = it)
+                    }
+                }
+        }
+    }
+
+    private fun getTicketSortByDriver() {
+        viewModelScope.launch {
+            repository.getTicketSortByDriver()
+                .catch {
+                    Log.e(TAG, "getTicketSortByDriver failed", it)
+                    _event.emit(Event.ShowError(it))
+                }
+                .collectLatest {
+                    _state.update { state ->
+                        state.copy(tickets = it)
+                    }
+                }
+        }
+    }
+
+    private fun getTicketSortByLicense() {
+        viewModelScope.launch {
+            repository.getTicketSortByLicense()
+                .catch {
+                    Log.e(TAG, "getTicketSortByLicense failed", it)
                     _event.emit(Event.ShowError(it))
                 }
                 .collectLatest {

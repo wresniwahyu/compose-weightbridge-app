@@ -3,5 +3,10 @@
     <string name="search">Search</string>
     <string name="no_tickets_available">No Tickets Available</string>
     <string name="loading">Loading...</string>
+    <string name="sort_by_weighing_date">Sort By Weighing Date</string>
+    <string name="sort_by_driver_name">Sort By Driver Name</string>
+    <string name="sort_by_license_number">Sort By License Number</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 </resources>

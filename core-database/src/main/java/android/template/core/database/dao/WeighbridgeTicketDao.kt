@@ -13,6 +13,18 @@ interface WeighbridgeTicketDao {
     @Query("SELECT * FROM WeighbridgeTicketModel")
     fun getTickets(): Flow<List<WeighbridgeTicketModel>>
 
+    @Query("SELECT * FROM WeighbridgeTicketModel ORDER BY weighing_date ASC")
+    fun getTicketsByDateAsc(): Flow<List<WeighbridgeTicketModel>>
+
+    @Query("SELECT * FROM WeighbridgeTicketModel ORDER BY driver_name ASC")
+    fun getTicketsByDriverAsc(): Flow<List<WeighbridgeTicketModel>>
+
+    @Query("SELECT * FROM WeighbridgeTicketModel ORDER BY license_number ASC")
+    fun getTicketsByLicenseAsc(): Flow<List<WeighbridgeTicketModel>>
+
+    @Query("SELECT * FROM WeighbridgeTicketModel WHERE weighing_date LIKE :keyword OR driver_name LIKE :keyword OR license_number LIKE :keyword")
+    fun getTicketsByKeyword(keyword: String): Flow<List<WeighbridgeTicketModel>>
+
     @Query("SELECT * FROM WeighbridgeTicketModel WHERE id = :id")
     fun getTicketById(id: String): Flow<WeighbridgeTicketModel>
 
